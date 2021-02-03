@@ -7,6 +7,7 @@ type Liff struct {
 }
 
 func VerifiedIdToken(idToken string) *Liff {
+	// todo:idTokenの有効性を確認する処理を実装する
 	return &Liff{
 		Uid: "123456789",
 		Name: "タナカ",

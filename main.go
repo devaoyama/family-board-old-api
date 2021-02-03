@@ -2,13 +2,12 @@ package main
 
 import (
 	"family-board-api/config"
+	"family-board-api/handler"
 	"family-board-api/registry"
-	"family-board-api/usecase"
-	"family-board-api/usecase/input"
-	"fmt"
 	"log"
 
 	"github.com/joho/godotenv"
+	"github.com/labstack/echo/v4"
 )
 
 func main() {
@@ -26,15 +25,12 @@ func main() {
 
 	// DI
 	repository := registry.NewRepository(db)
-	uu := usecase.NewUserUsecase(repository.User)
-	i := &input.LoginWithLine{
-		LiffIdToken: "123456789",
-	}
+	userHandler := handler.NewUserHandler(repository)
 
-	token, err := uu.LoginWithLine(i)
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
+	e := echo.New()
 
-	fmt.Println(token)
+	// 認証
+	e.POST("/login", userHandler.LoginWithLiff)
+
+	e.Logger.Fatal(e.Start(":8000"))
 }
