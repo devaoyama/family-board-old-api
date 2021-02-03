@@ -7,14 +7,14 @@ import (
 	"gorm.io/gorm"
 )
 
-type repo struct {
-	User repository.UserRepository
+type Repository struct {
+	Ur repository.UserRepository
 }
 
-func NewRepository(db *gorm.DB) *repo {
+func NewRepository(db *gorm.DB) *Repository {
 	up := persistence.NewUserPersistence(db)
 
-	return &repo{
-		User: up,
+	return &Repository{
+		Ur: up,
 	}
 }
