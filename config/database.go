@@ -1,6 +1,7 @@
 package config
 
 import (
+	"family-board-api/domain/model"
 	"os"
 
 	"gorm.io/driver/mysql"
@@ -13,6 +14,7 @@ func InitDatabase() (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+	db.AutoMigrate(&model.User{})
 
 	return db, nil
 }
