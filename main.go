@@ -2,6 +2,9 @@ package main
 
 import (
 	"family-board-api/config"
+	"family-board-api/registry"
+	"family-board-api/usecase"
+	"family-board-api/usecase/input"
 	"fmt"
 	"log"
 
@@ -15,9 +18,23 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	_, err = config.InitDatabase()
+	// db初期化
+	db, err := config.InitDatabase()
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-	fmt.Println("完了")
+
+	// DI
+	repository := registry.NewRepository(db)
+	uu := usecase.NewUserUsecase(repository.User)
+	i := &input.LoginWithLine{
+		LiffIdToken: "123456789",
+	}
+
+	token, err := uu.LoginWithLine(i)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+
+	fmt.Println(token)
 }
