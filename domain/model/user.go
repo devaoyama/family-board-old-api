@@ -9,7 +9,7 @@ type User struct {
 	PictureUrl string `gorm:"type:text"`
 }
 
-func NewUser(lineUid, name string, pictureUrl string) *User {
+func NewUser(lineUid, name, pictureUrl string) *User {
 	return &User{
 		LineUid:    lineUid,
 		Name:       name,
