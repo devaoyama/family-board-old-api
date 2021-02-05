@@ -41,3 +41,8 @@ func (fp *familyPersistence) Delete(family *model.Family) (*model.Family, error)
 	result := fp.Db.Delete(family)
 	return family, result.Error
 }
+
+func (fp *familyPersistence) AppendTodo(family *model.Family, todo *model.Todo) (*model.Family, error) {
+	err := fp.Db.Model(family).Association("Todos").Append(todo)
+	return family, err
+}

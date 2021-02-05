@@ -10,7 +10,7 @@ type Todo struct {
 	gorm.Model
 	FamilyId    int
 	Title       string    `gorm:"type:varchar(255)"`
-	Description string    `gorm:"type:varchar(255)"`
+	Description string    `gorm:"type:text"`
 	Status      bool      `gorm:"type:bool;default:false"`
 	Date        time.Time `gorm:"type:date"`
 }

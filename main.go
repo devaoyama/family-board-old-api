@@ -30,6 +30,7 @@ func main() {
 	repository := registry.NewRepository(db)
 	userHandler := handler.NewUserHandler(repository)
 	familyHandler := handler.NewFamilyHandler(repository)
+	todoHandler := handler.NewTodoHandler(repository)
 
 	e := echo.New()
 
@@ -48,6 +49,7 @@ func main() {
 	r.POST("/families", familyHandler.Create)
 	r.POST("/families/join", familyHandler.Join)
 	r.POST("/families/leave/:id", familyHandler.Leave)
+	r.POST("/families/:familyId/todos", todoHandler.Create)
 
 	e.Logger.Fatal(e.Start(":8000"))
 }
