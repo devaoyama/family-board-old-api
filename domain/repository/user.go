@@ -8,4 +8,5 @@ type UserRepository interface {
 	Store(user *model.User) (*model.User, error)
 	Update(user *model.User) (*model.User, error)
 	Delete(user *model.User) (*model.User, error)
+	AppendFamily(user *model.User, family *model.Family) (*model.User, error)
 }

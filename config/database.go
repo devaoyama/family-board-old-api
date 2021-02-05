@@ -14,7 +14,7 @@ func InitDatabase() (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.User{}, &model.Family{})
 
 	return db, nil
 }
