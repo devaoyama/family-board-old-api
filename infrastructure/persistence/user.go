@@ -41,3 +41,13 @@ func (up *userPersistence) Delete(user *model.User) (*model.User, error) {
 	result := up.Db.Delete(user)
 	return user, result.Error
 }
+
+func (up *userPersistence) AppendFamily(user *model.User, family *model.Family) (*model.User, error) {
+	err := up.Db.Model(user).Association("Families").Append(family)
+	return user, err
+}
+
+func (up *userPersistence) DeleteFamily(user *model.User, family *model.Family) (*model.User, error) {
+	err := up.Db.Model(user).Association("Families").Delete(family)
+	return user, err
+}

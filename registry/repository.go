@@ -9,12 +9,15 @@ import (
 
 type Repository struct {
 	Ur repository.UserRepository
+	Fr repository.FamilyRepository
 }
 
 func NewRepository(db *gorm.DB) *Repository {
 	up := persistence.NewUserPersistence(db)
+	fp := persistence.NewFamilyPersistence(db)
 
 	return &Repository{
 		Ur: up,
+		Fr: fp,
 	}
 }
