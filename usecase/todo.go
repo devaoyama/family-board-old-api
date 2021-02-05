@@ -35,3 +35,16 @@ func (tu *TodoUsecase) CreateTodo(i *input.CreateTodo) (*output.CreateTodo, erro
 
 	return o, err
 }
+
+func (tu *TodoUsecase) ChangeTodoStatus(i *input.ChangeTodoStatus) (*output.ChangeStatus, error) {
+	o := &output.ChangeStatus{}
+	todo, err := tu.tr.FindById(i.TodoId)
+	if err != nil {
+		return o, nil
+	}
+	// todo UserがFamilyに入っているかを確認
+	todo.Status = !todo.Status
+	todo, err = tu.tr.Update(todo)
+	o.Todo = todo
+	return o, nil
+}

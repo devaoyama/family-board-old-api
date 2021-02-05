@@ -49,7 +49,10 @@ func main() {
 	r.POST("/families", familyHandler.Create)
 	r.POST("/families/join", familyHandler.Join)
 	r.POST("/families/leave/:id", familyHandler.Leave)
-	r.POST("/families/:familyId/todos", todoHandler.Create)
+
+	// to+do
+	r.POST("/todos", todoHandler.Create)
+	r.POST("/todos/:id/change_status", todoHandler.ChangeStatus)
 
 	e.Logger.Fatal(e.Start(":8000"))
 }

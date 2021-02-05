@@ -6,3 +6,8 @@ type CreateTodo struct {
 	FamilyId    int
 	UserId      int
 }
+
+type ChangeTodoStatus struct {
+	TodoId int
+	UserId int
+}
