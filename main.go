@@ -1,13 +1,16 @@
 package main
 
 import (
+	"family-board-api/auth"
 	"family-board-api/config"
 	"family-board-api/handler"
 	"family-board-api/registry"
 	"log"
+	"os"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
@@ -26,11 +29,23 @@ func main() {
 	// DI
 	repository := registry.NewRepository(db)
 	userHandler := handler.NewUserHandler(repository)
+	familyHandler := handler.NewFamilyHandler(repository)
 
 	e := echo.New()
 
 	// 認証
 	e.POST("/login", userHandler.LoginWithLiff)
+
+	// jwt認証が必要
+	jwtConfig := middleware.JWTConfig{
+		Claims:     &auth.JwtCustomClaims{},
+		SigningKey: []byte(os.Getenv("JWT_SECRET")),
+	}
+	r := e.Group("")
+	r.Use(middleware.JWTWithConfig(jwtConfig))
+
+	// family
+	r.POST("/families", familyHandler.Create)
 
 	e.Logger.Fatal(e.Start(":8000"))
 }
