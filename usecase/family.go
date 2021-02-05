@@ -41,6 +41,22 @@ func (fu *familyUsecase) CreateFamily(i *input.CreateFamily) (*output.CreateFami
 	return o, nil
 }
 
+func (fu *familyUsecase) JoinFamily(i *input.JoinFamily) (*output.JoinFamily, error) {
+	o := &output.JoinFamily{}
+	family, err := fu.fr.FindByInvitationCode(i.InvitationCode)
+	if err != nil {
+		return o, err
+	}
+	user, err := fu.ur.FindById(i.UserId)
+	if err != nil {
+		return o, err
+	}
+	_, err = fu.ur.AppendFamily(user, family)
+	o.Family = family
+
+	return o, err
+}
+
 func generateInvitationCode(length int) string {
 	var letter = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 

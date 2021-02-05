@@ -21,6 +21,12 @@ func (fp *familyPersistence) FindById(id int) (*model.Family, error) {
 	return &family, result.Error
 }
 
+func (fp *familyPersistence) FindByInvitationCode(code string) (*model.Family, error) {
+	var family model.Family
+	result := fp.Db.Where("invitation_code", code).First(&family)
+	return &family, result.Error
+}
+
 func (fp *familyPersistence) Store(family *model.Family) (*model.Family, error) {
 	result := fp.Db.Create(family)
 	return family, result.Error

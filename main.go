@@ -46,6 +46,7 @@ func main() {
 
 	// family
 	r.POST("/families", familyHandler.Create)
+	r.POST("/families/join", familyHandler.Join)
 
 	e.Logger.Fatal(e.Start(":8000"))
 }

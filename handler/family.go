@@ -32,9 +32,29 @@ func (fh *FamilyHandler) Create(ctx echo.Context) error {
 		Name: ctx.FormValue("name"),
 		UserId: userId,
 	}
-	family, err := fu.CreateFamily(i)
+	o, err := fu.CreateFamily(i)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	return ctx.JSON(http.StatusOK, family)
+	return ctx.JSON(http.StatusOK, o)
+}
+
+func (fh *FamilyHandler) Join(ctx echo.Context) error {
+	ur := fh.repository.Ur
+	fr := fh.repository.Fr
+	fu := usecase.NewFamilyUsecase(ur, fr)
+
+	user := ctx.Get("user").(*jwt.Token)
+	claims := user.Claims.(*auth.JwtCustomClaims)
+	userId := claims.Id
+
+	i := &input.JoinFamily{
+		InvitationCode: ctx.FormValue("invitation_code"),
+		UserId: userId,
+	}
+	o, err := fu.JoinFamily(i)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+	return ctx.JSON(http.StatusOK, o)
 }
