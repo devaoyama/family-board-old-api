@@ -9,3 +9,8 @@ type JoinFamily struct {
 	InvitationCode string
 	UserId         int
 }
+
+type LeaveFamily struct {
+	FamilyId int
+	UserId   int
+}

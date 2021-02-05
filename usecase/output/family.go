@@ -9,3 +9,7 @@ type CreateFamily struct {
 type JoinFamily struct {
 	Family *model.Family
 }
+
+type LeaveFamily struct {
+	Result int
+}
