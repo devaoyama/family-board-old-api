@@ -6,6 +6,10 @@ type CreateTodo struct {
 	Todo *model.Todo
 }
 
-type ChangeStatus struct {
+type ChangeTodoStatus struct {
+	Todo *model.Todo
+}
+
+type DeleteTodo struct {
 	Todo *model.Todo
 }

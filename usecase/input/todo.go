@@ -11,3 +11,8 @@ type ChangeTodoStatus struct {
 	TodoId int
 	UserId int
 }
+
+type DeleteTodo struct {
+	TodoId int
+	UserId int
+}

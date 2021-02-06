@@ -36,8 +36,8 @@ func (tu *TodoUsecase) CreateTodo(i *input.CreateTodo) (*output.CreateTodo, erro
 	return o, err
 }
 
-func (tu *TodoUsecase) ChangeTodoStatus(i *input.ChangeTodoStatus) (*output.ChangeStatus, error) {
-	o := &output.ChangeStatus{}
+func (tu *TodoUsecase) ChangeTodoStatus(i *input.ChangeTodoStatus) (*output.ChangeTodoStatus, error) {
+	o := &output.ChangeTodoStatus{}
 	todo, err := tu.tr.FindById(i.TodoId)
 	if err != nil {
 		return o, nil
@@ -47,4 +47,15 @@ func (tu *TodoUsecase) ChangeTodoStatus(i *input.ChangeTodoStatus) (*output.Chan
 	todo, err = tu.tr.Update(todo)
 	o.Todo = todo
 	return o, nil
+}
+
+func (tu *TodoUsecase) DeleteTodo(i *input.DeleteTodo) (*output.DeleteTodo, error) {
+	o := &output.DeleteTodo{}
+	todo, err := tu.tr.FindById(i.TodoId)
+	if err != nil {
+		return o, nil
+	}
+	todo, err = tu.tr.Delete(todo)
+	o.Todo = todo
+	return o, err
 }

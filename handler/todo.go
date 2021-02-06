@@ -65,3 +65,25 @@ func (th *TodoHandler) ChangeStatus(ctx echo.Context) error {
 	}
 	return ctx.JSON(http.StatusOK, o)
 }
+
+func (th *TodoHandler) Delete(ctx echo.Context) error {
+	ur := th.repository.Ur
+	fr := th.repository.Fr
+	tr := th.repository.Tr
+	tu := usecase.NewTodoUsecase(ur, fr, tr)
+
+	user := ctx.Get("user").(*jwt.Token)
+	claims := user.Claims.(*auth.JwtCustomClaims)
+	userId := claims.Id
+
+	todoId, _ := strconv.Atoi(ctx.Param("id"))
+	i := &input.DeleteTodo{
+		UserId: userId,
+		TodoId: todoId,
+	}
+	o, err := tu.DeleteTodo(i)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+	return ctx.JSON(http.StatusOK, o)
+}

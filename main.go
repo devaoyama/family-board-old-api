@@ -53,6 +53,7 @@ func main() {
 	// to+do
 	r.POST("/todos", todoHandler.Create)
 	r.POST("/todos/:id/change_status", todoHandler.ChangeStatus)
+	r.DELETE("/todos/:id", todoHandler.Delete)
 
 	e.Logger.Fatal(e.Start(":8000"))
 }
