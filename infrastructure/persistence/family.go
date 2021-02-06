@@ -46,3 +46,13 @@ func (fp *familyPersistence) AppendTodo(family *model.Family, todo *model.Todo) 
 	err := fp.Db.Model(family).Association("Todos").Append(todo)
 	return family, err
 }
+
+func (fp *familyPersistence) AppendUser(family *model.Family, user *model.User) (*model.Family, error) {
+	err := fp.Db.Model(family).Association("User").Append(user)
+	return family, err
+}
+
+func (fp *familyPersistence) ClearUser(family *model.Family, user *model.User) (*model.Family, error) {
+	err := fp.Db.Model(family).Association("User").Delete(user)
+	return family, err
+}

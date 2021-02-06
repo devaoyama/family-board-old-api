@@ -32,7 +32,7 @@ func (fu *familyUsecase) CreateFamily(i *input.CreateFamily) (*output.CreateFami
 	if err != nil {
 		return o, err
 	}
-	user, err = fu.ur.AppendFamily(user, family)
+	_, err = fu.fr.AppendUser(family, user)
 	if err != nil {
 		return o, err
 	}
@@ -51,7 +51,7 @@ func (fu *familyUsecase) JoinFamily(i *input.JoinFamily) (*output.JoinFamily, er
 	if err != nil {
 		return o, err
 	}
-	_, err = fu.ur.AppendFamily(user, family)
+	_, err = fu.fr.AppendUser(family, user)
 	o.Family = family
 
 	return o, err
@@ -64,7 +64,7 @@ func (fu *familyUsecase) LeaveFamily(i *input.LeaveFamily) (*output.LeaveFamily,
 		return o, err
 	}
 	user, err := fu.ur.FindById(i.UserId)
-	user, err = fu.ur.DeleteFamily(user, family)
+	_, err = fu.fr.ClearUser(family, user)
 	o.Result = 1
 
 	return o, err

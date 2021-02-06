@@ -30,12 +30,10 @@ func (th *TodoHandler) Create(ctx echo.Context) error {
 	claims := user.Claims.(*auth.JwtCustomClaims)
 	userId := claims.Id
 
-	familyId, _ := strconv.Atoi(ctx.FormValue("family_id"))
 	i := &input.CreateTodo{
 		Title:       ctx.FormValue("title"),
 		Description: ctx.FormValue("description"),
 		UserId:      userId,
-		FamilyId:    familyId,
 	}
 	o, err := tu.CreateTodo(i)
 	if err != nil {
