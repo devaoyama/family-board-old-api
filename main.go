@@ -48,6 +48,7 @@ func main() {
 	r.Use(middleware.JWTWithConfig(jwtConfig))
 
 	// user
+	r.GET("/users/me", userHandler.Me)
 	r.POST("/users/change_status", userHandler.ChangeStatus)
 
 	// family

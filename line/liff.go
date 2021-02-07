@@ -2,6 +2,7 @@ package line
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -22,7 +23,7 @@ type liffVerifiedResponse struct {
 	Picture string `json:"picture"`
 }
 
-func VerifiedIdToken(idToken string) *Liff {
+func VerifiedIdToken(idToken string) (*Liff, error) {
 	client := &http.Client{
 		Timeout: time.Second * 15,
 	}
@@ -32,6 +33,9 @@ func VerifiedIdToken(idToken string) *Liff {
 	req, _ := http.NewRequest("POST", "https://api.line.me/oauth2/v2.1/verify", strings.NewReader(values.Encode()))
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	res, _ := client.Do(req)
+	if res.StatusCode != http.StatusOK {
+		return nil, errors.New("unauthorized")
+	}
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
 	var response liffVerifiedResponse
@@ -41,5 +45,5 @@ func VerifiedIdToken(idToken string) *Liff {
 		Uid:     response.Sub,
 		Name:    response.Name,
 		Picture: response.Picture,
-	}
+	}, nil
 }

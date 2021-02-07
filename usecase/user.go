@@ -21,7 +21,10 @@ func NewUserUsecase(ur repository.UserRepository) *UserUsecase {
 
 func (uu *UserUsecase) LoginWithLine(i *input.LoginWithLine) (*output.LoginWithLine, error) {
 	// LIFFのTokenの有効性を確認してUIDを取得
-	liff := line.VerifiedIdToken(i.LiffIdToken)
+	liff, err := line.VerifiedIdToken(i.LiffIdToken)
+	if err != nil {
+		return nil, err
+	}
 
 	// UIDからUserを作成or更新
 	user, err := uu.ur.FindByLineUid(liff.Uid)
