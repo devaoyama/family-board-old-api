@@ -45,6 +45,9 @@ func main() {
 	r := e.Group("")
 	r.Use(middleware.JWTWithConfig(jwtConfig))
 
+	// user
+	r.POST("/users/change_status", userHandler.ChangeStatus)
+
 	// family
 	r.POST("/families", familyHandler.Create)
 	r.POST("/families/join", familyHandler.Join)

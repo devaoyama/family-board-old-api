@@ -56,3 +56,15 @@ func (uu *UserUsecase) LoginWithLine(i *input.LoginWithLine) (*output.LoginWithL
 
 	return o, err
 }
+
+func (uu *UserUsecase) ChangeUserStatus(i *input.ChangeUserStatus) (*output.ChangeUserStatus, error) {
+	o := &output.ChangeUserStatus{}
+	user, err := uu.ur.FindById(i.UserId)
+	if err != nil {
+		return o, err
+	}
+	user.Status = i.Status
+	user, err = uu.ur.Update(user)
+	o.User = user
+	return o, err
+}

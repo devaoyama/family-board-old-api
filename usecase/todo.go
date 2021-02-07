@@ -30,7 +30,7 @@ func (tu *TodoUsecase) CreateTodo(i *input.CreateTodo) (*output.CreateTodo, erro
 		return o, nil
 	}
 	todo := model.NewTodo(i.Title, i.Description, false, time.Now())
-	family, err := tu.fr.FindById(user.FamilyId)
+	family, err := tu.fr.FindById(*user.FamilyId)
 	if err != nil {
 		return o, err
 	}
@@ -50,7 +50,7 @@ func (tu *TodoUsecase) ChangeTodoStatus(i *input.ChangeTodoStatus) (*output.Chan
 	if err != nil {
 		return o, nil
 	}
-	if user.FamilyId != todo.FamilyId {
+	if *user.FamilyId != todo.FamilyId {
 		return o, errors.New("this action is unauthorized")
 	}
 	todo.Status = !todo.Status
@@ -69,7 +69,7 @@ func (tu *TodoUsecase) DeleteTodo(i *input.DeleteTodo) (*output.DeleteTodo, erro
 	if err != nil {
 		return o, nil
 	}
-	if user.FamilyId != todo.FamilyId {
+	if *user.FamilyId != todo.FamilyId {
 		return o, errors.New("this action is unauthorized")
 	}
 	todo, err = tu.tr.Delete(todo)
