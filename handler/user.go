@@ -40,6 +40,24 @@ func (uh *UserHandler) LoginWithLiff(ctx echo.Context) error {
 	return ctx.String(http.StatusOK, o.JwtToken)
 }
 
+func (uh *UserHandler) Me(ctx echo.Context) error {
+	ur := uh.repository.Ur
+	uu := usecase.NewUserUsecase(ur)
+
+	user := ctx.Get("user").(*jwt.Token)
+	claims := user.Claims.(*auth.JwtCustomClaims)
+	userId := claims.Id
+
+	i := &input.GetLoginUser{
+		UserId: userId,
+	}
+	o, err := uu.GetLoginUser(i)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+	return ctx.JSON(http.StatusOK, o)
+}
+
 func (uh *UserHandler) ChangeStatus(ctx echo.Context) error {
 	ur := uh.repository.Ur
 	uu := usecase.NewUserUsecase(ur)

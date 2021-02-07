@@ -57,6 +57,13 @@ func (uu *UserUsecase) LoginWithLine(i *input.LoginWithLine) (*output.LoginWithL
 	return o, err
 }
 
+func (uu *UserUsecase) GetLoginUser(i *input.GetLoginUser) (*output.GetLoginUser, error) {
+	o := &output.GetLoginUser{}
+	user, err := uu.ur.FindById(i.UserId)
+	o.User = user
+	return o, err
+}
+
 func (uu *UserUsecase) ChangeUserStatus(i *input.ChangeUserStatus) (*output.ChangeUserStatus, error) {
 	o := &output.ChangeUserStatus{}
 	user, err := uu.ur.FindById(i.UserId)
