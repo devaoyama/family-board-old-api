@@ -23,11 +23,28 @@ func NewTodoUsecase(ur repository.UserRepository, fr repository.FamilyRepository
 	}
 }
 
+func (tu *TodoUsecase) GetTodo(i *input.GetTodo) (*output.GetTodo, error) {
+	o := &output.GetTodo{}
+	user, err := tu.ur.FindById(i.UserId)
+	if err != nil {
+		return o, err
+	}
+	if user.FamilyId == nil {
+		return o, errors.New("ファミリーに入っていません")
+	}
+	todos, err := tu.tr.FindByFamilyId(*user.FamilyId)
+	o.Todos = todos
+	return o, err
+}
+
 func (tu *TodoUsecase) CreateTodo(i *input.CreateTodo) (*output.CreateTodo, error) {
 	o := &output.CreateTodo{}
 	user, err := tu.ur.FindById(i.UserId)
 	if err != nil {
 		return o, nil
+	}
+	if user.FamilyId == nil {
+		return o, errors.New("ファミリーに入っていません")
 	}
 	todo := model.NewTodo(i.Title, i.Description, false, time.Now())
 	family, err := tu.fr.FindById(*user.FamilyId)
@@ -45,6 +62,9 @@ func (tu *TodoUsecase) ChangeTodoStatus(i *input.ChangeTodoStatus) (*output.Chan
 	user, err := tu.ur.FindById(i.UserId)
 	if err != nil {
 		return o, nil
+	}
+	if user.FamilyId == nil {
+		return o, errors.New("ファミリーに入っていません")
 	}
 	todo, err := tu.tr.FindById(i.TodoId)
 	if err != nil {
@@ -64,6 +84,9 @@ func (tu *TodoUsecase) DeleteTodo(i *input.DeleteTodo) (*output.DeleteTodo, erro
 	user, err := tu.ur.FindById(i.UserId)
 	if err != nil {
 		return o, nil
+	}
+	if user.FamilyId == nil {
+		return o, errors.New("ファミリーに入っていません")
 	}
 	todo, err := tu.tr.FindById(i.TodoId)
 	if err != nil {

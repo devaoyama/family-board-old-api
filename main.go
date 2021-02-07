@@ -33,6 +33,8 @@ func main() {
 	todoHandler := handler.NewTodoHandler(repository)
 
 	e := echo.New()
+	// CORSの設定
+	e.Use(middleware.CORS())
 
 	// 認証
 	e.POST("/login", userHandler.LoginWithLiff)
@@ -54,6 +56,7 @@ func main() {
 	r.POST("/families/leave/:id", familyHandler.Leave)
 
 	// to+do
+	r.GET("/todos", todoHandler.Get)
 	r.POST("/todos", todoHandler.Create)
 	r.POST("/todos/:id/change_status", todoHandler.ChangeStatus)
 	r.DELETE("/todos/:id", todoHandler.Delete)

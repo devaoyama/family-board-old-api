@@ -21,6 +21,12 @@ func (up *todoPersistence) FindById(id int) (*model.Todo, error) {
 	return &todo, result.Error
 }
 
+func (up *todoPersistence) FindByFamilyId(familyId int) ([]*model.Todo, error) {
+	var todos []*model.Todo
+	result := up.Db.Where("family_id", familyId).Find(&todos)
+	return todos, result.Error
+}
+
 func (up *todoPersistence) Store(todo *model.Todo) (*model.Todo, error) {
 	result := up.Db.Create(todo)
 	return todo, result.Error

@@ -1,5 +1,9 @@
 package input
 
+type GetTodo struct {
+	UserId int
+}
+
 type CreateTodo struct {
 	Title       string
 	Description string

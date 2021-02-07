@@ -20,6 +20,26 @@ func NewTodoHandler(repository *registry.Repository) *TodoHandler {
 	return &TodoHandler{repository: repository}
 }
 
+func (th *TodoHandler) Get(ctx echo.Context) error {
+	ur := th.repository.Ur
+	fr := th.repository.Fr
+	tr := th.repository.Tr
+	tu := usecase.NewTodoUsecase(ur, fr, tr)
+
+	user := ctx.Get("user").(*jwt.Token)
+	claims := user.Claims.(*auth.JwtCustomClaims)
+	userId := claims.Id
+
+	i := &input.GetTodo{
+		UserId: userId,
+	}
+	o, err := tu.GetTodo(i)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+	return ctx.JSON(http.StatusOK, o)
+}
+
 func (th *TodoHandler) Create(ctx echo.Context) error {
 	ur := th.repository.Ur
 	fr := th.repository.Fr

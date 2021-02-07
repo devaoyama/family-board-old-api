@@ -19,11 +19,20 @@ func NewUserHandler(repository *registry.Repository) *UserHandler {
 	return &UserHandler{repository: repository}
 }
 
+type loginWithLiffRequest struct {
+	IdToken string `json:"id_token"`
+}
+
 func (uh *UserHandler) LoginWithLiff(ctx echo.Context) error {
 	ur := uh.repository.Ur
 	uu := usecase.NewUserUsecase(ur)
 
-	i := &input.LoginWithLine{LiffIdToken: ctx.FormValue("id_token")}
+	var request loginWithLiffRequest
+	if err := ctx.Bind(&request); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+
+	i := &input.LoginWithLine{LiffIdToken: request.IdToken}
 	o, err := uu.LoginWithLine(i)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
