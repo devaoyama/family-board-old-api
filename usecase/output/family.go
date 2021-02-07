@@ -2,6 +2,10 @@ package output
 
 import "family-board-api/domain/model"
 
+type GetFamily struct {
+	Family *model.Family
+}
+
 type CreateFamily struct {
 	Family *model.Family
 }

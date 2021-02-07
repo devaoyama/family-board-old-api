@@ -20,6 +20,25 @@ func NewFamilyHandler(repository *registry.Repository) *FamilyHandler {
 	return &FamilyHandler{repository: repository}
 }
 
+func (fh *FamilyHandler) Get(ctx echo.Context) error {
+	ur := fh.repository.Ur
+	fr := fh.repository.Fr
+	fu := usecase.NewFamilyUsecase(ur, fr)
+
+	user := ctx.Get("user").(*jwt.Token)
+	claims := user.Claims.(*auth.JwtCustomClaims)
+	userId := claims.Id
+
+	i := &input.GetFamily{
+		UserId: userId,
+	}
+	o, err := fu.GetFamily(i)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+	return ctx.JSON(http.StatusOK, o)
+}
+
 func (fh *FamilyHandler) Create(ctx echo.Context) error {
 	ur := fh.repository.Ur
 	fr := fh.repository.Fr

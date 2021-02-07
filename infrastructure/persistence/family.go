@@ -17,7 +17,7 @@ func NewFamilyPersistence(db *gorm.DB) repository.FamilyRepository {
 
 func (fp *familyPersistence) FindById(id int) (*model.Family, error) {
 	var family model.Family
-	result := fp.Db.First(&family, id)
+	result := fp.Db.Preload("Users").First(&family, id)
 	return &family, result.Error
 }
 

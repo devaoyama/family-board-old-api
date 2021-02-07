@@ -1,5 +1,9 @@
 package input
 
+type GetFamily struct {
+	UserId int
+}
+
 type CreateFamily struct {
 	Name   string
 	UserId int

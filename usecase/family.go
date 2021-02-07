@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"errors"
 	"family-board-api/domain/model"
 	"family-board-api/domain/repository"
 	"family-board-api/usecase/input"
@@ -18,6 +19,20 @@ func NewFamilyUsecase(ur repository.UserRepository, fr repository.FamilyReposito
 		ur: ur,
 		fr: fr,
 	}
+}
+
+func (fu *familyUsecase) GetFamily(i *input.GetFamily) (*output.GetFamily, error) {
+	o := &output.GetFamily{}
+	user, err := fu.ur.FindById(i.UserId)
+	if err != nil {
+		return o, err
+	}
+	if user.FamilyId == nil {
+		return o, errors.New("ファミリーに入っていません")
+	}
+	family, err := fu.fr.FindById(*user.FamilyId)
+	o.Family = family
+	return o, err
 }
 
 func (fu *familyUsecase) CreateFamily(i *input.CreateFamily) (*output.CreateFamily, error) {

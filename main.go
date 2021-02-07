@@ -51,6 +51,7 @@ func main() {
 	r.POST("/users/change_status", userHandler.ChangeStatus)
 
 	// family
+	r.GET("/families", familyHandler.Get)
 	r.POST("/families", familyHandler.Create)
 	r.POST("/families/join", familyHandler.Join)
 	r.POST("/families/leave/:id", familyHandler.Leave)
