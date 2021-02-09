@@ -20,6 +20,14 @@ func NewFamilyHandler(repository *registry.Repository) *FamilyHandler {
 	return &FamilyHandler{repository: repository}
 }
 
+type createRequest struct {
+	Name string `json:"name"`
+}
+
+type joinRequest struct {
+	InvitationCode string `json:"invitation_code"`
+}
+
 func (fh *FamilyHandler) Get(ctx echo.Context) error {
 	ur := fh.repository.Ur
 	fr := fh.repository.Fr
@@ -48,8 +56,13 @@ func (fh *FamilyHandler) Create(ctx echo.Context) error {
 	claims := user.Claims.(*auth.JwtCustomClaims)
 	userId := claims.Id
 
+	var request createRequest
+	if err := ctx.Bind(&request); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+
 	i := &input.CreateFamily{
-		Name: ctx.FormValue("name"),
+		Name:   request.Name,
 		UserId: userId,
 	}
 	o, err := fu.CreateFamily(i)
@@ -68,9 +81,14 @@ func (fh *FamilyHandler) Join(ctx echo.Context) error {
 	claims := user.Claims.(*auth.JwtCustomClaims)
 	userId := claims.Id
 
+	var request joinRequest
+	if err := ctx.Bind(&request); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+
 	i := &input.JoinFamily{
-		InvitationCode: ctx.FormValue("invitation_code"),
-		UserId: userId,
+		InvitationCode: request.InvitationCode,
+		UserId:         userId,
 	}
 	o, err := fu.JoinFamily(i)
 	if err != nil {
@@ -90,7 +108,7 @@ func (fh *FamilyHandler) Leave(ctx echo.Context) error {
 
 	familyId, _ := strconv.Atoi(ctx.Param("id"))
 	i := &input.LeaveFamily{
-		UserId: userId,
+		UserId:   userId,
 		FamilyId: familyId,
 	}
 	o, err := fu.LeaveFamily(i)

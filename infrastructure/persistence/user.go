@@ -41,4 +41,3 @@ func (up *userPersistence) Delete(user *model.User) (*model.User, error) {
 	result := up.Db.Delete(user)
 	return user, result.Error
 }
-
