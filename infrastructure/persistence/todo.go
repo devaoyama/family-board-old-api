@@ -38,6 +38,6 @@ func (up *todoPersistence) Update(todo *model.Todo) (*model.Todo, error) {
 }
 
 func (up *todoPersistence) Delete(todo *model.Todo) (*model.Todo, error) {
-	result := up.Db.Delete(todo)
+	result := up.Db.Unscoped().Delete(todo)
 	return todo, result.Error
 }
