@@ -23,7 +23,7 @@ type loginWithLiffRequest struct {
 	IdToken string `json:"id_token"`
 }
 
-type changeStatusRequest struct {
+type userChangeStatusRequest struct {
 	Status string `json:"status"`
 }
 
@@ -70,7 +70,7 @@ func (uh *UserHandler) ChangeStatus(ctx echo.Context) error {
 	claims := user.Claims.(*auth.JwtCustomClaims)
 	userId := claims.Id
 
-	var request changeStatusRequest
+	var request userChangeStatusRequest
 	if err := ctx.Bind(&request); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}

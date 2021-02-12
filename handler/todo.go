@@ -20,6 +20,11 @@ func NewTodoHandler(repository *registry.Repository) *TodoHandler {
 	return &TodoHandler{repository: repository}
 }
 
+type todoCreateRequest struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+}
+
 func (th *TodoHandler) Get(ctx echo.Context) error {
 	ur := th.repository.Ur
 	fr := th.repository.Fr
@@ -50,9 +55,14 @@ func (th *TodoHandler) Create(ctx echo.Context) error {
 	claims := user.Claims.(*auth.JwtCustomClaims)
 	userId := claims.Id
 
+	var request todoCreateRequest
+	if err := ctx.Bind(&request); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+
 	i := &input.CreateTodo{
-		Title:       ctx.FormValue("title"),
-		Description: ctx.FormValue("description"),
+		Title:       request.Title,
+		Description: request.Description,
 		UserId:      userId,
 	}
 	o, err := tu.CreateTodo(i)

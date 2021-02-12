@@ -20,11 +20,11 @@ func NewFamilyHandler(repository *registry.Repository) *FamilyHandler {
 	return &FamilyHandler{repository: repository}
 }
 
-type createRequest struct {
+type familyCreateRequest struct {
 	Name string `json:"name"`
 }
 
-type joinRequest struct {
+type familyJoinRequest struct {
 	InvitationCode string `json:"invitation_code"`
 }
 
@@ -56,7 +56,7 @@ func (fh *FamilyHandler) Create(ctx echo.Context) error {
 	claims := user.Claims.(*auth.JwtCustomClaims)
 	userId := claims.Id
 
-	var request createRequest
+	var request familyCreateRequest
 	if err := ctx.Bind(&request); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
@@ -81,7 +81,7 @@ func (fh *FamilyHandler) Join(ctx echo.Context) error {
 	claims := user.Claims.(*auth.JwtCustomClaims)
 	userId := claims.Id
 
-	var request joinRequest
+	var request familyJoinRequest
 	if err := ctx.Bind(&request); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
