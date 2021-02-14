@@ -52,7 +52,7 @@ func (tu *TodoUsecase) CreateTodo(i *input.CreateTodo) (*output.CreateTodo, erro
 		return o, err
 	}
 	family, err = tu.fr.AppendTodo(family, todo)
-	o.Todo = todo
+	o.Result = 1
 
 	return o, err
 }
@@ -75,7 +75,7 @@ func (tu *TodoUsecase) ChangeTodoStatus(i *input.ChangeTodoStatus) (*output.Chan
 	}
 	todo.Status = !todo.Status
 	todo, err = tu.tr.Update(todo)
-	o.Todo = todo
+	o.Result = 1
 	return o, nil
 }
 
@@ -96,6 +96,6 @@ func (tu *TodoUsecase) DeleteTodo(i *input.DeleteTodo) (*output.DeleteTodo, erro
 		return o, errors.New("this action is unauthorized")
 	}
 	todo, err = tu.tr.Delete(todo)
-	o.Todo = todo
+	o.Result = 1
 	return o, err
 }

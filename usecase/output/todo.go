@@ -7,13 +7,13 @@ type GetTodo struct {
 }
 
 type CreateTodo struct {
-	Todo *model.Todo
+	Result int
 }
 
 type ChangeTodoStatus struct {
-	Todo *model.Todo
+	Result int
 }
 
 type DeleteTodo struct {
-	Todo *model.Todo
+	Result int
 }
