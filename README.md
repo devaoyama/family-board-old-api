@@ -14,9 +14,14 @@
 git clone https://github.com/devkeita/family-board-api.git
 ```
 
-dockerを立ち上げる
+.envを作成
 ```
-docker-compose up -d
+cp .env.sample .env
+```
+
+ローカルサーバーを立ち上げる
+```
+go run main.go
 ```
 
 ## EC2上で立ち上げる
