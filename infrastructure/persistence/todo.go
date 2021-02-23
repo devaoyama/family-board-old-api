@@ -3,6 +3,7 @@ package persistence
 import (
 	"family-board-api/domain/model"
 	"family-board-api/domain/repository"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -24,6 +25,12 @@ func (up *todoPersistence) FindById(id int) (*model.Todo, error) {
 func (up *todoPersistence) FindByFamilyId(familyId int) ([]*model.Todo, error) {
 	var todos []*model.Todo
 	result := up.Db.Where("family_id", familyId).Find(&todos)
+	return todos, result.Error
+}
+
+func (up *todoPersistence) FindByDate(date time.Time) ([]*model.Todo, error) {
+	var todos []*model.Todo
+	result := up.Db.Where("date", date).Find(&todos)
 	return todos, result.Error
 }
 
