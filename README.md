@@ -4,7 +4,7 @@
 - go 1.14
 - echo
 - gorm
-- mysql
+- mysql5.7
 - docker/docker-compose
 
 ## ローカル環境セットアップ
