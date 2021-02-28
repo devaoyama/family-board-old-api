@@ -7,6 +7,7 @@ import (
 	"family-board-api/usecase/input"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
@@ -35,8 +36,15 @@ func (th *TodoHandler) Get(ctx echo.Context) error {
 	claims := user.Claims.(*auth.JwtCustomClaims)
 	userId := claims.Id
 
+	var date *time.Time
+	if dateStr := ctx.QueryParam("date"); dateStr != "" {
+		d, _ := time.Parse("2006-01-02", dateStr)
+		date = &d
+	}
+
 	i := &input.GetTodo{
 		UserId: userId,
+		Date:   date,
 	}
 	o, err := tu.GetTodo(i)
 	if err != nil {

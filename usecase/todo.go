@@ -32,7 +32,12 @@ func (tu *TodoUsecase) GetTodo(i *input.GetTodo) (*output.GetTodo, error) {
 	if user.FamilyId == nil {
 		return o, errors.New("ファミリーに入っていません")
 	}
-	todos, err := tu.tr.FindByFamilyId(*user.FamilyId)
+	var todos []*model.Todo
+	if i.Date != nil {
+		todos, err = tu.tr.FindByFamilyIdAndDate(*user.FamilyId, *i.Date)
+	} else {
+		todos, err = tu.tr.FindByFamilyId(*user.FamilyId)
+	}
 	o.Todos = todos
 	return o, err
 }
