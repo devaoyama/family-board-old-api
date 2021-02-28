@@ -30,7 +30,7 @@ func (up *todoPersistence) FindByFamilyId(familyId int) ([]*model.Todo, error) {
 
 func (up *todoPersistence) FindByFamilyIdAndDate(familyId int, date time.Time) ([]*model.Todo, error) {
 	var todos []*model.Todo
-	result := up.Db.Where("family_id = ? AND date = ?", familyId, date).Find(&todos)
+	result := up.Db.Where("family_id", familyId).Where("date", date.Format("2006-01-02")).Find(&todos)
 	return todos, result.Error
 }
 

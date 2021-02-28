@@ -1,7 +1,10 @@
 package input
 
+import "time"
+
 type GetTodo struct {
 	UserId int
+	Date   *time.Time
 }
 
 type CreateTodo struct {
