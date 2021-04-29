@@ -1,5 +1,7 @@
 # Family Board API
 
+※ドメインが定まっていないサービスをgoで開発するのは非効率 -> 別の言語/フレームワークを使う
+
 ## 言語/フレームワーク
 - go 1.14
 - echo
@@ -36,7 +38,7 @@ dockerイメージをビルドする
 docker build -t api .
 ```
 
- dockerを立ち上げる
- ```
- docker run -d -p 9000:9000 --name api
- ```
+dockerを立ち上げる
+```
+docker run -d -p 9000:9000 --name api
+```
